@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week 1 - Consume API</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script>
+    const completed = (response) => {
+      let resultHTML = document.getElementById('result');
+      const data = JSON.parse(response.target.responseText);
+      resultHTML.innerHTML = `Tipo de Cambio Dolares: ${data.exchangeRateUSD}<br>`;
+      resultHTML.innerHTML += `Tipo de Cambio Euros: ${data.exchangeRateEUR}`;
+    };
+
+    const error = () => console.log(this.responseText);
+
+    function getExchange() {
+      let currency = document.getElementById('countries').value;
+      const ajaxRequest = new XMLHttpRequest(); //AJAX
+      ajaxRequest.addEventListener("load", completed);
+      ajaxRequest.addEventListener("error", error);
+      ajaxRequest.open("GET", "http://localhost:3001/tipocambio?currency=" + currency);
+      ajaxRequest.send();
+    }
+  </script>
+</head>
+
+<body class="bg-secondary">
+  <div class="d-flex justify-content-center align-items-center">
+    <div class="result-container border border-white p-5 bg-white mt-5 rounded">
+      <!-- Añade la clase mb-3 para un margen inferior -->
+      <h3>Results:</h3>
+      <div id="result"></div>
+      <br>
+      <label for="countries" class="form-label fw-bold">Countries:</label>
+      <select name="countries" id="countries" onchange="getExchange()">
+      </select>
+    </div>
+  </div>
+  <script>
+    const ajaxRequest = new XMLHttpRequest(); //AJAX
+
+    ajaxRequest.addEventListener("load", (e) => {
+      const countries = JSON.parse(e.target.responseText);
+      let optionsHtml = "";
+      countries.forEach(country => {
+        optionsHtml += `<option value="${country.currency}">${country.name}</option>`;
+      });
+      document.getElementById("countries").innerHTML = optionsHtml;
+      getExchange();
+    });
+
+    ajaxRequest.addEventListener("error", (error) => {
+      console.log("Error solicitud paises", error)
+    });
+
+    ajaxRequest.open("GET", "http://localhost:3001/paises");
+    ajaxRequest.send();
+  </script>
+</body>
+
+</html>
