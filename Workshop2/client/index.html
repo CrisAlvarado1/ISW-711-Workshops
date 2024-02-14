@@ -9,17 +9,19 @@
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <script>
     const completed = (response) => {
+      // Load the exchange data into the container "result"
       let resultHTML = document.getElementById('result');
       const data = JSON.parse(response.target.responseText);
-      resultHTML.innerHTML = `Tipo de Cambio Dolares: ${data.exchangeRateUSD}<br>`;
-      resultHTML.innerHTML += `Tipo de Cambio Euros: ${data.exchangeRateEUR}`;
+      resultHTML.innerHTML = `Tipo de Cambio Dolares: ${(data.exchangeRateUSD) ? data.exchangeRateUSD : "Not found"}<br>`;
+      resultHTML.innerHTML += `Tipo de Cambio Euros: ${(data.exchangeRateEUR) ? data.exchangeRateEUR : "Not found"}`;
     };
 
     const error = () => console.log(this.responseText);
 
     function getExchange() {
       let currency = document.getElementById('countries').value;
-      const ajaxRequest = new XMLHttpRequest(); //AJAX
+      // AJAX request to fetch the exchange rates for USD and EUR based on the selected country
+      const ajaxRequest = new XMLHttpRequest();
       ajaxRequest.addEventListener("load", completed);
       ajaxRequest.addEventListener("error", error);
       ajaxRequest.open("GET", "http://localhost:3001/tipocambio?currency=" + currency);
@@ -31,7 +33,6 @@
 <body class="bg-secondary">
   <div class="d-flex justify-content-center align-items-center">
     <div class="result-container border border-white p-5 bg-white mt-5 rounded">
-      <!-- Añade la clase mb-3 para un margen inferior -->
       <h3>Results:</h3>
       <div id="result"></div>
       <br>
@@ -44,6 +45,7 @@
     const ajaxRequest = new XMLHttpRequest(); //AJAX
 
     ajaxRequest.addEventListener("load", (e) => {
+      // Load the countries into item select.
       const countries = JSON.parse(e.target.responseText);
       let optionsHtml = "";
       countries.forEach(country => {
@@ -57,6 +59,7 @@
       console.log("Error solicitud paises", error)
     });
 
+    // AJAX request to fetch all the countries
     ajaxRequest.open("GET", "http://localhost:3001/paises");
     ajaxRequest.send();
   </script>

@@ -27,7 +27,7 @@ router.get('/tipocambio', async (req, res) => {
 // Get all countries and related information
 router.get('/paises', async (req, res) => {
     try {
-        const response = await fetch('https://restcountries.com/v3.1/all'); // Solicitud a la API de tercero
+        const response = await fetch('https://restcountries.com/v3.1/all');
         const data = await response.json();
 
         const allCountries = data.map(country => ({
@@ -42,4 +42,5 @@ router.get('/paises', async (req, res) => {
     }
 });
 
+// Export this module
 module.exports = router;
