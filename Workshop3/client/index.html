@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week 4 - Consume API</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="js/app.js"></script>
+</head>
+
+<body>
+  <div class="container p-4">
+    <h1 class="text-center h2 mb-3">API CRUD of Careers</h1>
+    <div class="row">
+      <div class="col-md-5 mt-2">
+        <div class="card">
+          <div class="card-body">
+            <h2 class="h3 mb-3">Form of career</h2>
+            <form>
+              <input type="hidden" id="id">
+              <div class="form-group mb-3">
+                <input type="text" id="name" placeholder="Type Career Name" class="form-control">
+              </div>
+              <div class="form-group mb-3">
+                <input type="text" id="code" placeholder="Type Career Code" class="form-control">
+              </div>
+              <div class="form-group mb-3">
+                <textarea id="description" cols="30" rows="7" class="form-control"
+                  placeholder="Type Career Description"></textarea>
+              </div>
+              <button type="button" class="btn btn-primary" id="saveButton" onclick="saveCareer()">
+                Save Career
+              </button>
+              <button type="button" class="btn btn-light" id="clearButton" onclick="clearFormValues()">
+                Clear data
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-7 mt-2">
+        <table class="table table-bordered table-sm">
+          <thead>
+            <tr>
+              <td>Name</td>
+              <td>Code</td>
+              <td>Description</td>
+              <td>Actions</td>
+            </tr>
+          </thead>
+          <tbody id="careerBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
