@@ -32,7 +32,7 @@ const coursePost = async (req, res) => {
  * @param {*} res
  */
 const courseGet = (req, res) => {
-  // if an specific teacher is required
+  // If an specific course is required
   if (req.query && req.query.id) {
     Course.findById(req.query.id).populate('teacher')
       .then( (course) => {
@@ -44,7 +44,7 @@ const courseGet = (req, res) => {
         res.json({ error: "Course doesnt exist" })
       });
   } else {
-    // get all teachers
+    // Get all courses
     Course.find().populate('teacher')
       .then( courses => {
         res.json(courses);
@@ -56,6 +56,7 @@ const courseGet = (req, res) => {
   }
 };
 
+// Export the functions of this controller
 module.exports = {
   coursePost,
   courseGet

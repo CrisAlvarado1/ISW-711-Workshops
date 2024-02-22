@@ -1,7 +1,5 @@
-const error = (e) => console.log(e.target.responseText);
-
 /**
- * Get one or all careers.
+ * Get one for edit or all careers for render in the table.
  * @param {string} id - Optional. The id of the career to retrieve.
  */
 function get(id) {
@@ -24,20 +22,38 @@ function get(id) {
 }
 
 /**
+ * Validates career data.
+ * @param {object} careerData - Object containing the fields of the career
+ * @returns {boolean} True if all fields have values, False if any field is empty.
+ */
+function validateCareerData(careerData) {
+    if (careerData.name.trim() !== '' && careerData.code.trim() !== ''
+        && careerData.description.trim() !== '') {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+/**
  * Sends career data to be saved or updated based on the existence of an ID.
  */
 function saveCareer() {
     let id = document.getElementById('id').value;
+    
     const careerData = {
         name: document.getElementById('name').value,
         code: document.getElementById('code').value,
         description: document.getElementById('description').value
     }
+    let hasCareerData = validateCareerData(careerData);
 
-    if (!id) {
+    if (!id && hasCareerData) {
         createCareer(careerData);
-    } else {
+    } else if (hasCareerData) {
         updateCareer(id, careerData);
+    } else {
+        alert('Incomplete information!');
     }
 }
 

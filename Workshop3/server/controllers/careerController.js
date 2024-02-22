@@ -89,10 +89,10 @@ const careerPatch = (req, res) => {
                 res.json({ error: "Career doesn't exist" })
             }
 
-            // Update the teacher object (patch)
+            // Update the career object (patch)
             career.name = req.body.name ? req.body.name : career.name;
             career.code = req.body.code ? req.body.code : career.code;
-            career.description = req.body.description ? req.body.description : career.req
+            career.description = req.body.description ? req.body.description : career.description
 
             // Finally update the career
             career.save(function (err) {
@@ -120,7 +120,7 @@ const careerPatch = (req, res) => {
  * @param {*} res
  */
 const careerDelete = (req, res) => {
-    // if an specific career is required
+    // If an specific career is required
     if (req.query && req.query.id) {
         // Search if exist this career and send it
         Career.findById(req.query.id, function (err, career) {
@@ -153,6 +153,6 @@ const careerDelete = (req, res) => {
 module.exports = {
     careerGet,
     careerPost,
-    careerPatch, 
+    careerPatch,
     careerDelete
 }

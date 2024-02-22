@@ -147,6 +147,7 @@ const teacherDelete = (req, res) => {
   }
 };
 
+// Export the functions of this controller
 module.exports = {
   teacherGet,
   teacherPost,
