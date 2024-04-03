@@ -1,68 +1,109 @@
 let container = document.getElementById("container");
 
+// This is the thead for the courses tables in different careers.
+const theadCourses = `
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Credits</th>
+    </tr>
+  </thead>
+`;
+
+// This is the thead for the teachers tables in different careers
+const theadTeacher = `
+  <thead>
+    <tr>
+      <th scope="col">Cedula</th>
+      <th scope="col">Name</th>
+    </tr>
+  </thead>
+`;
+
 /**
- * Builds HTML list items for the courses.
+ * Builds HTML table rows for courses or teachers.
  *
- * @param {Object} careerData - Object representing a career.
- * @returns {string} - HTML list items for courses.
+ * @param {Object} data - Object representing courses or teachers data.
+ * @param {string} type - Type of data: 'courses' or 'teachers'.
+ * @returns {string} - HTML table rows for courses or teachers.
  */
-const buildCourseListItems = (careerData) => {
-  let htmlListItems = "";
-  careerData.courses.forEach((course) => {
-    htmlListItems += `
-      <li class="list-group-item">${course.name}</li>
-    `;
+const buildTableRows = (data, type) => {
+  let htmlTableRows = "";
+  data.forEach((item) => {
+    if (type === 'courses') {
+      htmlTableRows += `
+        <tr class="">
+          <td class="">${item.name}</td>
+          <td class="">${item.credits}</td>
+        </tr>
+      `;
+    } else if (type === 'teachers') {
+      htmlTableRows += `
+        <tr class="">
+          <td class="">${item.teacher.cedula}</td>
+          <td class="">${item.teacher.first_name} ${item.teacher.last_name}</td>
+        </tr>
+      `;
+    }
   });
-  return htmlListItems;
+  return htmlTableRows;
 };
 
 /**
- * Builds HTML list items for the teachers.
+ * Builds HTML content for courses and their assigned teachers.
  *
- * @param {Object} careerData - Object representing a career.
- * @returns {string} - HTML list items for teachers.
+ * @param {Object} coursesData - Object representing courses data.
+ * @param {Object} teacherData - Object representing teachers data.
+ * @returns {string} HTML content.
  */
-const buildTeacherListItems = (careerData) => {
-  let htmlListItems = "";
-  careerData.courses.forEach((course) => {
-    htmlListItems += `
-      <li class="list-group-item">
-        ${course.teacher.first_name} ${course.teacher.last_name}
-      </li>
+const buildHTMLContent = (coursesData, teacherData) => {
+  if (coursesData && teacherData) {
+    return `
+      <p class="text-center lead">Courses and their assigned teachers</p>
+      <div class="col-6">
+        <h3 class="h5 text-center mb-2">Courses</h3>
+        <table class="table table-hover">
+          ${theadCourses}
+          <tbody>
+            ${coursesData}
+          </tbody>
+        </table>
+      </div>
+      <div class="col-6">
+        <h3 class="h5 text-center mb-2">Teachers</h3>
+        <table class="table table-hover">
+          ${theadTeacher}
+          <tbody>
+            ${teacherData}
+          </tbody>
+        </table>
+      </div>
     `;
-  });
-  return htmlListItems;
+  } else {
+    return `
+      <p class="text-center lead mb-5">No courses and teachers assigned</p>
+    `;
+  }
 };
 
 /**
  * Builds and injects HTML content based on careers data.
  *
- * @param {Object} careersData -Object containing careers information.
+ * @param {Object} careersData - Object containing careers information.
  */
 const buildHTML = (careersData) => {
   container.innerHTML = "";
   careersData.data.getAllCareers.forEach((career) => {
-    let coursesListItems = buildCourseListItems(career);
-    let teacherListItems = buildTeacherListItems(career);
+    let coursesData = buildTableRows(career.courses, 'courses');
+    let teacherData = buildTableRows(career.courses, 'teachers');
+    let htmlContent = buildHTMLContent(coursesData, teacherData);
 
     let html = `
       <div class="row mt-4">
         <div class="text-center mb-1">
           <h2 class="display-5">${career.name}</h2>
         </div>
-        <p class="text-center lead">Courses and their assigned teachers</p>
-        <div class="col-6">
-          <h3 class="h5 text-center mb-2">Courses</h3>
-          <ol class="list-group list-group-numbered">
-            ${coursesListItems}
-          </ol>
-        </div>
-        <div class="col-6">
-          <h3 class="h5 text-center mb-2">Teachers</h3>
-          <ol class="list-group list-group-numbered">
-            ${teacherListItems}
-          </ol>
-        </div>
+        ${htmlContent}
       </div>
     `;
     container.innerHTML += html;
