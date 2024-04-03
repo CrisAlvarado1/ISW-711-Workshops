@@ -1,21 +1,13 @@
 let container = document.getElementById("container");
 
 // This is the thead for the courses tables in different careers.
-const theadCourses = `
+const thead = `
   <thead>
     <tr>
-      <th scope="col">Name</th>
-      <th scope="col">Credits</th>
-    </tr>
-  </thead>
-`;
-
-// This is the thead for the teachers tables in different careers
-const theadTeacher = `
-  <thead>
-    <tr>
-      <th scope="col">Cedula</th>
-      <th scope="col">Name</th>
+      <th scope="col">Course name</th>
+      <th scope="col">Course credits</th>
+      <th scope="col">Teachers ID</th>
+      <th scope="col">Teacher's name</th>
     </tr>
   </thead>
 `;
@@ -30,21 +22,14 @@ const theadTeacher = `
 const buildTableRows = (data, type) => {
   let htmlTableRows = "";
   data.forEach((item) => {
-    if (type === 'courses') {
-      htmlTableRows += `
+    htmlTableRows += `
         <tr class="">
           <td class="">${item.name}</td>
           <td class="">${item.credits}</td>
-        </tr>
-      `;
-    } else if (type === 'teachers') {
-      htmlTableRows += `
-        <tr class="">
           <td class="">${item.teacher.cedula}</td>
           <td class="">${item.teacher.first_name} ${item.teacher.last_name}</td>
         </tr>
       `;
-    }
   });
   return htmlTableRows;
 };
@@ -56,25 +41,15 @@ const buildTableRows = (data, type) => {
  * @param {Object} teacherData - Object representing teachers data.
  * @returns {string} HTML content.
  */
-const buildHTMLContent = (coursesData, teacherData) => {
-  if (coursesData && teacherData) {
+const buildHTMLContent = (careersData) => {
+  if (careersData) {
     return `
       <p class="text-center lead">Courses and their assigned teachers</p>
-      <div class="col-6">
-        <h3 class="h5 text-center mb-2">Courses</h3>
-        <table class="table table-hover">
-          ${theadCourses}
+      <div class="col-12">
+        <table class="table table-hover table-bordered">
+          ${thead}
           <tbody>
-            ${coursesData}
-          </tbody>
-        </table>
-      </div>
-      <div class="col-6">
-        <h3 class="h5 text-center mb-2">Teachers</h3>
-        <table class="table table-hover">
-          ${theadTeacher}
-          <tbody>
-            ${teacherData}
+            ${careersData}
           </tbody>
         </table>
       </div>
@@ -94,9 +69,8 @@ const buildHTMLContent = (coursesData, teacherData) => {
 const buildHTML = (careersData) => {
   container.innerHTML = "";
   careersData.data.getAllCareers.forEach((career) => {
-    let coursesData = buildTableRows(career.courses, 'courses');
-    let teacherData = buildTableRows(career.courses, 'teachers');
-    let htmlContent = buildHTMLContent(coursesData, teacherData);
+    let careersData = buildTableRows(career.courses, "courses");
+    let htmlContent = buildHTMLContent(careersData);
 
     let html = `
       <div class="row mt-4">
